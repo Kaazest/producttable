@@ -39,7 +39,7 @@ class Editor(View):
         newprecio = request.POST.get('precio')
         newstock = request.POST.get('stock')
         gratuito = request.POST.get('gratuito')
-        
+
         if gratuito == None:
             gratuito = False
         else:
@@ -51,7 +51,7 @@ class Editor(View):
         producto.stock = newstock
         producto.esGratuito = gratuito
         producto.save()
-        return JsonResponse({"success": "Ok"})
+        return render(request,'edit.html', context={'producto' : producto})
         
             
           
