@@ -10,8 +10,8 @@
     {% load static %}
     <h1>Editar Producto</h1>
 
-    <p>{{ producto.nombre_producto }}</p>
     <form method="POST">
+        {% csrf_token %}
         <input type="hidden" name="id" value="{{ producto.id }}" class="hidden"/>
         <label for="input_name">Nuevo nombre</label>
             <input type="text" id="input_name" name="name" value= '{{ producto.nombre_producto }}'required>
@@ -24,7 +24,7 @@
             <input type="number" id="input_stock" name="stock" value= '{{ producto.stock }}' required>
             
         <label for="input_gratuito">Gratuito</label>
-            <input type="checkbox" id="input_gratuito" name="gratuito" >
+            <input type="checkbox" id="input_gratuito" name="gratuito" value="{{producto.esGratuito}}">
             <button type="submit">Enviar</button>
     </form>
 

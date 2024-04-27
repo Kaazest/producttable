@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect
 from django.views import View
 from myapp.models import Products
 from django.core.paginator import Paginator
+from django.utils import timezone
  
 # Create your views here.
 
@@ -34,7 +35,6 @@ class Editor(View):
 
         return render(request,'edit.html', context={'producto' : producto})
     def post(self, request, id):
-        id = request.POST.get('id')
         newnombre = request.POST.get('name')
         newprecio = request.POST.get('precio')
         newstock = request.POST.get('stock')
@@ -50,10 +50,36 @@ class Editor(View):
         producto.precio = newprecio
         producto.stock = newstock
         producto.esGratuito = gratuito
+        producto.fecha_hora = timezone.now()
         producto.save()
-        return JsonResponse({"success": "Ok"})
+        return redirect("index")
         
             
-          
+class DeleteProduct(View):
+    def post(self, request, id):
+        product = Products.objects.get(id=id)
+        product.delete()
+        return JsonResponse({"success": True})
 
-            
+class CreateProduct(View):
+    def get(self, request):
+        return render(request,'create.html')
+    def post(self, request):
+        newnombre = request.POST.get('name')
+        newprecio = request.POST.get('precio')
+        newstock = request.POST.get('stock')
+        gratuito = request.POST.get('gratuito')
+        
+        if gratuito == None:
+            gratuito = False
+        else:
+            gratuito = True
+        producto = Products.objects.create(nombre_producto = newnombre,
+        precio = newprecio,
+        stock = newstock,
+        esGratuito = gratuito,
+        fecha_hora = timezone.now()
+        )
+        
+        producto.save()
+        return redirect("index")

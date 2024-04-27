@@ -1,6 +1,6 @@
 services:
   db:
-    container_name: db_container
+    container_name: db_container_crud
     environment:
     - POSTGRES_DB=database_login
     - POSTGRES_PASSWORD=123456

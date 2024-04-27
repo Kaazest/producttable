@@ -7,50 +7,63 @@
 </head>
 
 <body>
+  {% csrf_token %}
   {% load static %}
+<header> 
+  <div class="p-3" id="header_container">
+    <h1>Lista de productos</h1>
+    <button id="button_add" class="btn btn-primary ml-5" type="button">Agregar producto</button>
 
-  <h1>Lista de productos</h1>
-<table class="table">
+  </div>
+</header>
   
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-
-      <th scope="col">Nombre</th>
-
-      <th scope="col">Precio</th>
-
-      <th scope="col">Free</th>
-      
-      <th scope="col">Stock</th>
-
-      <th scope="col">Fecha</th>
-
-    </tr>
-  </thead>
+<div id="main_container" class="p-3">
+  <table class="table" id="table_container">
   
-  <tbody>
-    {% for producto in page_obj %}
-
-    <tr>
-      <th scope="row">*</th>
-      <td>{{ producto.nombre_producto }}</td>
-      <td>{{ producto.precio }}</td>
-      <td>{{ producto.esGratuito }}
-      <td>{{ producto.stock }}</td>
-      <td>{{ producto.fecha_hora }}</td>
-      <td>
-        <button class='button_icons_edit' id= 'button_edit_{{ producto.id }}' href= "/edit/{{id}}">Editar</button>
-        <button type="button">Eliminar</button>
-      </td>
-    </tr>
+    <thead>
+      <tr>
+        <th class="text-center" scope="col">Nombre</th>
+  
+        <th class="text-center" scope="col">Precio</th>
+  
+        <th class="text-center" scope="col">¿Es gratuito?</th>
         
-    {% endfor %}   
+        <th class="text-center" scope="col">Stock</th>
+  
+        <th class="text-center" scope="col">Fecha</th>
+
+        <th class="text-center" scope="col">Opciones</th>
+
+  
+      </tr>
+    </thead>
     
-      
-  </tbody>
-</table>
-<div class="pagination">
+    <tbody id="body_table">
+      {% for producto in page_obj %}
+  
+      <tr id="table_row_container">
+        <td class="text-center">{{ producto.nombre_producto }}</td>
+        <td class="text-center">{{ producto.precio }}</td>
+        {% if producto.esGratuito == True %}
+        <td class="text-center">Sí</td>
+        {% else %}
+        <td class="text-center">No</td>
+        {% endif %}
+        <td class="text-center">{{ producto.stock }}</td>
+        <td class="text-center">{{ producto.fecha_hora }}</td>
+        <td class="text-center">
+          <button class='button_icons_edit btn btn-secondary' id= 'button_edit_{{ producto.id }}'>Editar</button>
+          <button class='button_icons_delete btn btn-danger' id= 'button_delete_{{ producto.id }}' type="button">Eliminar</button>
+        </td>
+      </tr>
+          
+      {% endfor %}   
+    </tbody>
+  </table>
+</div>
+
+
+<div class="pagination p-3">
   <span class="step-links">
       {% if page_obj.has_previous %}
           <a href="?page=1">&laquo; Primera</a>
@@ -67,17 +80,13 @@
       {% endif %}
   </span>
 </div>
-{% comment %} <nav aria-label="Page navigation example">
-  <ul class="pagination">
-    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-    <li class="page-item"><a class="page-link" href="/1">1</a></li>
-    <li class="page-item"><a class="page-link" href="/2">2</a></li>
-    <li class="page-item"><a class="page-link" href="/3">3</a></li>
-    <li class="page-item"><a class="page-link" href="#">Next</a></li>
-  </ul>
-</nav> {% endcomment %}
+
 {% block scrypttags %}
   <script src="{% static 'js/edit_product.js' %}"> </script>
+  <script src="{% static 'js/delete_product.js' %}"> </script>
+  <script src="{% static 'js/create_product.js' %}"> </script>
+
+
   {% endblock %}
 </body>
 </html>
